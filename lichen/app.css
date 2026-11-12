@@ -1,0 +1,35 @@
+/* SPDX-License-Identifier: MPL-2.0 — LICHEN's own layout */
+:root { --accent: #d6c66a; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --accent: #8a7a14; } }
+:root[data-theme="light"] { --accent: #8a7a14; }
+
+.lc-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; align-items: start; }
+@media (min-width: 1000px) { .lc-layout { grid-template-columns: minmax(0, 1fr) minmax(360px, 440px); } }
+.lc-left { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.lc-fieldwrap { width: 100%; min-width: 0; display: flex; justify-content: center; }
+.lc-field { display: block; touch-action: none; cursor: crosshair; border-radius: 6px; }
+.lc-field:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.lc-side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.lc-panel h2 { margin: 0 0 8px; font-size: 15px; color: var(--accent); letter-spacing: .05em; text-transform: uppercase; }
+.lc-panel summary { cursor: pointer; color: var(--accent); font-size: 15px; letter-spacing: .05em; min-height: 28px; display: flex; align-items: center; }
+.lc-row { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: end; margin-bottom: 10px; }
+.lc-row:last-child { margin-bottom: 0; }
+.lc-row .sc-btn { min-height: 34px; min-width: 34px; }
+.lc-small { padding: 4px 7px; font-family: var(--mono); font-size: 12.5px; }
+.lc-num { display: inline-flex; flex-direction: column; gap: 2px; font-size: 11px; color: var(--dim); letter-spacing: .05em; text-transform: uppercase; }
+.lc-num input { width: 6.5ch; background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 5px 6px; }
+.lc-rule { width: 15ch; font-family: var(--mono); background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
+.lc-err { color: var(--rec); font-size: 13px; min-height: 0; margin: -4px 0 8px; }
+.lc-err:empty { display: none; }
+.lc-stats { font-family: var(--mono); font-size: 12.5px; color: var(--dim); flex: 1 1 180px; }
+.lc-graph { width: 180px; height: 36px; border-radius: 4px; }
+.lc-stamp { width: 40px; height: 40px; border-radius: 4px; }
+.lc-keeps { align-items: center; }
+.lc-keep { min-width: 36px; font-family: var(--mono); }
+.lc-keep.full { border-color: var(--accent); color: var(--accent); box-shadow: inset 0 -3px 0 var(--accent); }
+.lc-rows { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 4px 12px; margin-top: 8px; }
+.lc-rowv { display: flex; align-items: center; justify-content: space-between; gap: 6px; font-family: var(--mono); font-size: 12.5px; }
+.lc-rowv.off span { color: var(--faint); }
+.lc-rowv select { background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 3px 4px; min-height: 30px; }
+.lc-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.lc-panel [hidden] { display: none !important; }

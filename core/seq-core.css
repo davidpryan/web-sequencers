@@ -1,0 +1,85 @@
+/* SPDX-License-Identifier: MPL-2.0 — seq-core.css: the six web sequencers' shared look */
+:root {
+  --bg: #0d1012; --panel: #181d20; --panel2: #20272b; --line: #2e363b; --fg: #ece8dc; --dim: #8b948f; --faint: #4c5457;
+  --rec: #f04c46; --ok: #78e2a0; --accent: #ffc440;
+  --c1: #ff7a5a; --c2: #6ec8ff; --c3: #ffd25a; --c4: #aa8cff; --c5: #78e2a0; --c6: #ff82c8; --c7: #5ad2dc; --c8: #c8c8c8;
+  --radius: 8px; --font: "Barlow Semi Condensed", "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f4f1ea; --panel: #e8e4da; --panel2: #ddd8cc; --line: #c9c3b6; --fg: #1d2124; --dim: #5d6460; --faint: #a39e93;
+    --rec: #d43a34; --ok: #2b9a5a; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #f4f1ea; --panel: #e8e4da; --panel2: #ddd8cc; --line: #c9c3b6; --fg: #1d2124; --dim: #5d6460; --faint: #a39e93;
+  --rec: #d43a34; --ok: #2b9a5a; color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 15px; }
+body { min-height: 100vh; display: flex; flex-direction: column; }
+button, select, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.sc-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--panel); position: sticky; top: 0; z-index: 5; }
+.sc-title { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.sc-title h1 { margin: 0; font-size: 22px; letter-spacing: .02em; color: var(--accent); }
+.sc-tag { color: var(--dim); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sc-home { color: var(--dim); text-decoration: none; font-size: 18px; }
+.sc-transport { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.sc-menu { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+.sc-play { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--accent); background: transparent; color: var(--accent); font-size: 18px; cursor: pointer; }
+.sc-play.on { background: var(--accent); color: var(--bg); }
+.sc-play:not(.played) { animation: sc-invite 1.6s ease-in-out infinite; }
+@keyframes sc-invite { 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 30%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .sc-play:not(.played) { animation: none; } }
+.sc-btn { background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+.sc-btn:hover { border-color: var(--dim); }
+.sc-btn.on { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.sc-midi { display: flex; align-items: center; gap: 8px; }
+.sc-midi select, .sc-sel select { background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 5px 6px; max-width: 190px; }
+.sc-sel { display: inline-flex; flex-direction: column; gap: 2px; font-size: 11px; color: var(--dim); letter-spacing: .05em; text-transform: uppercase; }
+.sc-chk { display: flex; align-items: center; gap: 4px; color: var(--dim); font-size: 13px; }
+
+.sc-knob { display: inline-grid; grid-template-columns: 34px auto; grid-template-rows: auto auto; column-gap: 6px; align-items: center; cursor: ns-resize; user-select: none; touch-action: none; padding: 2px 4px; border-radius: 6px; }
+.sc-knob:hover { background: var(--panel2); }
+.sc-dial { --f: 0; grid-row: span 2; width: 34px; height: 34px; border-radius: 50%; background: conic-gradient(from 225deg, var(--accent) calc(var(--f) * 270deg), var(--line) 0 270deg, transparent 0); position: relative; }
+.sc-dial::after { content: ""; position: absolute; inset: 5px; border-radius: 50%; background: var(--panel); }
+.sc-kl { font-size: 11px; color: var(--dim); letter-spacing: .06em; text-transform: uppercase; }
+.sc-kv { font-size: 14px; font-variant-numeric: tabular-nums; min-width: 4.5ch; }
+
+.sc-toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; background: var(--fg); color: var(--bg); padding: 8px 14px; border-radius: 6px; transition: .2s; pointer-events: none; z-index: 20; }
+.sc-toast.on { opacity: 1; transform: translate(-50%, 0); }
+.sc-help { position: fixed; inset: 0; background: rgba(0, 0, 0, .55); display: grid; place-items: center; z-index: 30; padding: 16px; }
+.sc-help-in { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 22px; max-width: 640px; width: 100%; max-height: 90vh; overflow: auto; }
+.sc-help-in h2 { margin: 0 0 6px; color: var(--accent); }
+.sc-help-in p { color: var(--dim); line-height: 1.45; }
+.sc-help-in table { border-collapse: collapse; width: 100%; margin: 10px 0 14px; }
+.sc-help-in th { text-align: left; white-space: nowrap; padding: 4px 12px 4px 0; vertical-align: top; font-family: var(--mono); font-size: 13px; color: var(--fg); }
+.sc-help-in td { padding: 4px 0; color: var(--dim); }
+
+main { flex: 1; padding: 14px 16px 24px; display: flex; flex-direction: column; gap: 14px; }
+.sc-panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; }
+.sc-row { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+.sc-canvas { width: 100%; display: block; }
+.sc-label { font-size: 11px; color: var(--dim); letter-spacing: .06em; text-transform: uppercase; }
+.sc-hint { color: var(--faint); font-size: 13px; }
+@media (max-width: 640px) {
+  .sc-head { padding: 8px 12px; }
+  .sc-tag { display: none; }
+  main { padding: 10px 12px 20px; }
+  .sc-menu { margin-left: 0; }
+  /* a phone: the header scrolls away, its file buttons in one row; play floats under the thumb */
+  .sc-head { position: static; gap: 8px 12px; }
+  .sc-title h1 { font-size: 20px; }
+  .sc-menu { flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; }
+  .sc-menu .sc-btn { flex: none; padding: 5px 9px; font-size: 13px; }
+  .sc-midi select { max-width: 150px; }
+  .sc-play { position: fixed; right: 16px; bottom: 16px; z-index: 15; width: 56px; height: 56px; font-size: 20px;
+    background: var(--panel); box-shadow: 0 4px 16px rgba(0, 0, 0, .35); }
+  .sc-play.on { background: var(--accent); }
+  main { padding-bottom: 88px; }
+}

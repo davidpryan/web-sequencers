@@ -1,0 +1,98 @@
+/* SPDX-License-Identifier: MPL-2.0 — STITCH: the step grid, the track panel, the step inspector */
+:root { --accent: #ff8a3d; --lock: var(--c2); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --accent: #d2611a; } }
+:root[data-theme="light"] { --accent: #d2611a; }
+
+.st-bar { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+.st-group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.st-group > .sc-label { margin-right: 2px; }
+.st-pat { min-width: 36px; min-height: 36px; font-weight: 600; position: relative; }
+.st-pat.used::after { content: ""; position: absolute; left: 50%; bottom: 3px; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: var(--dim); }
+.st-pat.cur { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.st-pat.cur.used::after { background: var(--bg); }
+.st-pat.queued { border-color: var(--accent); animation: st-blink .5s steps(2, start) infinite; }
+@keyframes st-blink { 50% { background: var(--accent); color: var(--bg); } }
+.st-pat.insong { box-shadow: inset 0 -2px 0 var(--fg); }
+.sc-btn { min-height: 34px; }
+.sc-btn.rec.on { background: var(--rec); border-color: var(--rec); color: var(--bg); }
+.sc-btn.fill.on { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+.st-page { min-width: 36px; position: relative; }
+.st-page.out { opacity: .45; }
+.st-page.here::before { content: ""; position: absolute; top: 3px; right: 3px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+.st-gridwrap { overflow-x: auto; padding: 8px; }
+.st-grid { display: flex; flex-direction: column; gap: 5px; min-width: max-content; }
+.st-row { display: grid; grid-template-columns: 92px 34px 34px auto 64px; gap: 4px; align-items: center; --tc: var(--c1); }
+.st-row.sel .st-name { border-color: var(--tc); box-shadow: inset 4px 0 0 var(--tc); }
+.st-name { position: sticky; left: 0; z-index: 1; text-align: left; min-height: 36px; background: var(--panel2); font-weight: 600; letter-spacing: .04em; }
+.st-name small { display: block; font-weight: 400; color: var(--dim); font-size: 11px; letter-spacing: .02em; }
+.st-ms { min-width: 34px; min-height: 36px; padding: 0; font-size: 13px; }
+.st-ms.m[aria-pressed="true"] { background: var(--faint); color: var(--bg); border-color: var(--faint); }
+.st-ms.s[aria-pressed="true"] { background: var(--ok); color: var(--bg); border-color: var(--ok); }
+.st-row.silent .st-steps { opacity: .4; }
+.st-steps { display: grid; grid-template-columns: repeat(16, minmax(34px, 1fr)); gap: 3px; min-width: 600px; }
+.st-steps > :nth-child(4n + 1):not(:first-child) { margin-left: 5px; }
+.st-info { font-size: 12px; color: var(--dim); font-variant-numeric: tabular-nums; }
+
+.st-step { position: relative; height: 40px; min-width: 34px; padding: 0; border-radius: 5px; border: 1px solid var(--line); background: var(--panel2); cursor: pointer; overflow: hidden; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.st-step:hover { border-color: var(--dim); }
+.st-step::before { content: ""; position: absolute; inset: 0; background: var(--tc); opacity: 0; }
+.st-step.on::before { opacity: var(--o, 1); }
+.st-step.data { border-color: var(--tc); border-style: dashed; }
+.st-step.beat { border-color: var(--faint); }
+.st-step.on { border-color: var(--tc); }
+.st-step:disabled { opacity: .18; cursor: default; }
+.st-step::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2; }
+.st-step.play::after { box-shadow: inset 0 0 0 3px var(--fg); }
+.st-step.cursor { outline: 2px dashed var(--accent); outline-offset: 1px; }
+.st-step.sel::after { box-shadow: inset 0 0 0 3px var(--lock); }
+.st-step.sel.play::after { box-shadow: inset 0 0 0 3px var(--lock), inset 0 0 0 6px var(--fg); }
+.st-step .mk { position: absolute; font-size: 10px; line-height: 1; font-family: var(--mono); color: var(--fg); z-index: 1; pointer-events: none; }
+.st-step.on .mk { color: var(--bg); }
+.st-step .lk { top: 3px; right: 3px; width: 7px; height: 7px; border-radius: 50%; background: var(--lock); border: 1px solid var(--bg); display: none; }
+.st-step.locked .lk { display: block; }
+.st-step .rt { top: 3px; left: 3px; }
+.st-step .cd { bottom: 3px; left: 3px; right: 3px; text-align: left; white-space: nowrap; overflow: hidden; }
+.st-step .mc { bottom: 0; height: 3px; width: 6px; left: calc(50% - 3px + var(--m, 0) * 1%); background: var(--fg); display: none; }
+.st-step.micro .mc { display: block; }
+.st-step .nt { top: 50%; left: 0; right: 0; transform: translateY(-50%); text-align: center; font-size: 10px; }
+
+.st-panels { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 14px; align-items: start; }
+@media (max-width: 900px) { .st-panels { grid-template-columns: minmax(0, 1fr); } }
+.st-panel h2 { margin: 0 0 8px; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.st-panel h2 .sc-hint { text-transform: none; letter-spacing: 0; font-weight: 400; }
+.st-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--tc); }
+.st-knobs { display: flex; flex-wrap: wrap; gap: 6px 10px; margin: 8px 0; }
+.sc-knob.locked .sc-dial { background: conic-gradient(from 225deg, var(--lock) calc(var(--f) * 270deg), var(--line) 0 270deg, transparent 0); }
+.sc-knob.locked .sc-kl, .sc-knob.locked .sc-kv { color: var(--lock); }
+.st-sub { margin: 10px 0 4px; }
+.st-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.st-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--panel2); border: 1px solid var(--lock); color: var(--fg); border-radius: 14px; padding: 2px 4px 2px 10px; font-size: 13px; min-height: 32px; cursor: pointer; }
+.st-chip b { color: var(--lock); font-weight: 600; }
+.st-song { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.st-entry { display: inline-flex; align-items: center; gap: 4px; background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 3px 4px; }
+.st-entry.now { border-color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); }
+.st-entry select { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 4px; min-height: 32px; }
+.st-entry .sc-btn { padding: 2px 8px; }
+.st-panel .sc-sel select { min-height: 34px; }
+.st-trig[aria-pressed="true"] { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .st-pat.queued { animation: none; outline: 2px dashed var(--accent); outline-offset: 2px; }
+  .sc-toast { transition: none; }
+}
+.st-group .sc-btn { min-width: 34px; }
+.st-entry .sc-btn { min-width: 32px; min-height: 32px; }
+/* phones: the track's name, M, S on a line, its 16 steps as two rows of 8 below */
+@media (max-width: 640px) {
+  .st-grid { min-width: 0; gap: 10px; }
+  .st-row { grid-template-columns: minmax(0, 1fr) 34px 34px auto; grid-template-areas: "name m s info" "steps steps steps steps"; }
+  .st-name { grid-area: name; position: static; min-height: 34px; }
+  .st-name small { display: inline; margin-left: 6px; }
+  .st-ms.m { grid-area: m; } .st-ms.s { grid-area: s; }
+  .st-info { grid-area: info; }
+  .st-steps { grid-area: steps; grid-template-columns: repeat(8, minmax(32px, 1fr)); min-width: 0; }
+  .st-steps > :nth-child(4n + 1):not(:first-child) { margin-left: 0; }
+  .st-steps > :nth-child(4n + 1) { box-shadow: inset 2px 0 0 var(--faint); }
+  .st-step { height: 38px; min-width: 32px; }
+}
